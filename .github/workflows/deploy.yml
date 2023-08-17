@@ -1,0 +1,35 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout 🛎️
+      uses: actions/checkout@v2.3.1
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2.1.2
+      with:
+        node-version: '16' 
+
+    - name: Hydrate site with data 🌊
+      run: |
+        yarn hydrate ""
+
+    - name: Install and Build 🔧
+      run: |
+        yarn install
+        yarn build
+
+    - name: Deploy to GitHub Pages 🚀
+      uses: JamesIves/github-pages-deploy-action@4.1.0
+      with:
+        token: 
+        branch: gh-pages
+        folder: build
